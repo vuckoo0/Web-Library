@@ -1,0 +1,92 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: rgb(250, 235, 215);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    margin: 0px;
+}
+
+footer {
+    background-color: rgb(255, 255, 255);
+    margin: 0;
+    height: 50px;
+    border-top: 1px solid rgb(51, 51, 51);
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center; 
+    align-items: center;
+    min-height: 300px;
+}
+
+label {
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+h1 {
+    color: rgb(44, 44, 44);
+    text-align: center;
+}
+
+.book-table {
+    margin: 20px auto;
+    border: 1px solid rgb(51, 51, 51);
+    border-collapse: collapse;
+    width: 700px;
+    text-align: left;
+}
+
+.book-table th,
+.book-table td {
+    border: 1px solid rgb(51, 51, 51);
+    padding: 8px 12px;
+}
+
+.book-table tbody {
+    background-color: white;
+}
+
+.book-table thead {
+    background-color: wheat;
+}
+
+.form-field {
+    margin: 8px;
+}
+
+.form-field input {
+    width: 300px;
+    height: 20px;
+}
+
+@media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    .book-table {
+        width: 100%;
+    }
+}
