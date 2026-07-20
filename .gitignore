@@ -1,0 +1,6 @@
+.vscode/
+
+.env
+
+go.mod
+go.sum

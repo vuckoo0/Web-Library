@@ -34,7 +34,7 @@ async function loadBooksFromDB() {
     
     try {
 
-        const response = await fetch('http://192.168.0.14:8080/books');
+        const response = await fetch('http://192.168.1.237:8080/books');
         const books = await response.json();
 
         bookTable.innerHTML = '';
@@ -51,11 +51,18 @@ form.addEventListener('submit', async (event) => {
 
     try {
 
-        const savedBook = await saveBookToDB({
-            title: document.querySelector('#title').value,
-            author: document.querySelector('#author').value,
-            isbn: document.querySelector('#isbn').value
-        });
+        const newBook = {
+            title: document.querySelector('#title').value.trim(),
+            author: document.querySelector('#author').value.trim(),
+            isbn: document.querySelector('#isbn').value.trim()
+        };
+
+        if ((newBook.author == "") || (newBook.title == "") || (newBook.isbn == "")) {
+            alert('You must enter a valid book!');
+            return;
+        }
+
+        const savedBook = await saveBookToDB(newBook);
 
         addBookToTable(savedBook);
         form.reset();
