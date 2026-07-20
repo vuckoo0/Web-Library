@@ -34,7 +34,7 @@ form {
     gap: 8px;
     justify-content: center; 
     align-items: center;
-    min-height: 300px;
+    min-height: 100px;
 }
 
 label {
@@ -67,6 +67,10 @@ h1 {
 
 .book-table thead {
     background-color: wheat;
+}
+
+.book-form {
+    min-height: 300px;
 }
 
 .form-field {
