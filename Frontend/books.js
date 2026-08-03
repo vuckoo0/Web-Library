@@ -1,6 +1,19 @@
 const bookTable = document.querySelector('.book-table tbody')
 console.log(bookTable)
 
+const searchForm = document.querySelector('form')
+console.log(searchForm)
+
+searchForm.addEventListener('submit', event => {
+
+    event.preventDefault();
+
+    const search = document.querySelector('#search').value;
+    searchForm.reset();
+
+    console.log(search);
+});
+
 function addBookToTable(book) {
     const row = document.createElement('tr');
 
