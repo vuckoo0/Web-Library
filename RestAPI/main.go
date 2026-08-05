@@ -28,6 +28,7 @@ func (b Book) String() string {
 }
 
 func LoadDotenv() {
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("[RestAPI]: Error in loading .env file: ", err)
