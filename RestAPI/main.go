@@ -108,6 +108,43 @@ func LoadBooks() []Book {
 	return books
 }
 
+func FindBookWithTitle(bookTitle string) ([]Book, error) {
+
+	booksWithTitle, err := libraryDB.Query("select * from books where title = ?", bookTitle)
+
+	if err != nil {
+		log.Print("[RestAPI]: Error in finding book into library database: ", err)
+		return nil, err
+	}
+
+	defer booksWithTitle.Close()
+
+	currentBookId := 1
+	books := []Book{}
+
+	for booksWithTitle.Next() {
+
+		var currentBook Book
+		err = booksWithTitle.Scan(&currentBook.Id, &currentBook.Title, &currentBook.Author, &currentBook.ISBN)
+
+		if err != nil {
+			log.Print("[RestAPI]: Error in reading book with Id: ", currentBookId)
+			continue
+		}
+
+		currentBookId += 1
+		books = append(books, currentBook)
+	}
+
+	err = booksWithTitle.Err()
+	if err != nil {
+		log.Print("[RestAPI]: Unecspected error:", err)
+		return nil, err
+	}
+
+	return books, nil
+}
+
 func HandleGET(c *gin.Context) {
 	books := LoadBooks()
 	c.JSON(200, books)
@@ -118,9 +155,12 @@ func HandlePOST(c *gin.Context) {
 	var newBook Book
 
 	err := c.ShouldBindJSON(&newBook)
+
 	if err != nil {
+
 		log.Print("[RestAPI]: Error in loading book sent from frontend: ", err)
 		c.JSON(400, gin.H{"error": err.Error()})
+
 		return
 	}
 
@@ -132,6 +172,33 @@ func HandlePOST(c *gin.Context) {
 	}
 
 	c.JSON(201, newBook)
+}
+
+func HandleFIND(c *gin.Context) {
+
+	var bookTitle string
+
+	err := c.ShouldBindJSON(bookTitle)
+
+	if err != nil {
+
+		log.Print("[RestAPI]: Error in loading book title from frontend: ", err)
+		c.JSON(400, gin.H{"error": err.Error()})
+
+		return
+	}
+
+	books, err := FindBookWithTitle(bookTitle)
+
+	if err != nil {
+
+		log.Print("[RestAPI]: Error in finding books with a title: ", err)
+		c.JSON(400, gin.H{"error": err.Error()})
+
+		return
+	}
+
+	c.JSON(200, books)
 }
 
 func main() {
@@ -146,6 +213,7 @@ func main() {
 
 	router.GET("/books", HandleGET)
 	router.POST("/books", HandlePOST)
+	router.Handle("FIND", "/books", HandleFIND)
 
 	router.Run(":8080")
 }
