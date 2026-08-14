@@ -1,205 +1,76 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
-	"log"
-	"os"
+	httpmethods "main/RestAPI/httpmethods"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 )
 
-type Book struct {
-	Id     int64  `json:"id"`
-	Title  string `json:"title"`
-	Author string `json:"author"`
-	ISBN   string `json:"isbn"`
-}
+// func FindBookWithTitle(bookTitle string) ([]Book, error) {
 
-var (
-	libraryDB *sql.DB
-)
+// 	booksWithTitle, err := libraryDB.Query("select * from books where title = ?", bookTitle)
 
-func (b Book) String() string {
-	return fmt.Sprintf("%d  | %s | %s | %s\n", b.Id, b.Title, b.Author, b.ISBN)
-}
+// 	if err != nil {
+// 		log.Print("[RestAPI]: Error in finding book into library database: ", err)
+// 		return nil, err
+// 	}
 
-func LoadDotenv() {
+// 	defer booksWithTitle.Close()
 
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("[RestAPI]: Error in loading .env file: ", err)
-	}
+// 	currentBookId := 1
+// 	books := []Book{}
 
-	log.Println("[RestAPI]: Succesfully loaded info from .env")
-}
+// 	for booksWithTitle.Next() {
 
-func ConnectDataBase() *sql.DB {
+// 		var currentBook Book
+// 		err = booksWithTitle.Scan(&currentBook.Id, &currentBook.Title, &currentBook.Author, &currentBook.ISBN)
 
-	LoadDotenv()
+// 		if err != nil {
+// 			log.Print("[RestAPI]: Error in reading book with Id: ", currentBookId)
+// 			continue
+// 		}
 
-	db, err := sql.Open("mysql", os.Getenv("DB_DNS"))
-	if err != nil {
-		log.Fatal("[RestAPI]: Error in opening the library database: ", err)
-	}
+// 		currentBookId += 1
+// 		books = append(books, currentBook)
+// 	}
 
-	err = db.Ping()
-	if err != nil {
-		log.Fatal("[RestAPI]: Error in library database pinging", err)
-	}
+// 	err = booksWithTitle.Err()
+// 	if err != nil {
+// 		log.Print("[RestAPI]: Unecspected error:", err)
+// 		return nil, err
+// 	}
 
-	log.Print("[RestAPI]: Succsesfully connected to the library")
+// 	return books, nil
+// }
 
-	return db
-}
+// func HandleFIND(c *gin.Context) {
 
-func (b *Book) InertBook() error {
+// 	var bookTitle string
 
-	result, err := libraryDB.Exec("insert into books (title, author, isbn) values (?, ?, ?)", b.Title, b.Author, b.ISBN)
-	if err != nil {
-		log.Print("[RestAPI]: Error in inerting book into library database: ", err)
-		return err
-	}
+// 	err := c.ShouldBindJSON(bookTitle)
 
-	b.Id, err = result.LastInsertId()
-	if err != nil {
-		log.Print("[RestAPI]: Error in Id-ing inserted book: ", err)
-		return err
-	}
+// 	if err != nil {
 
-	return nil
-}
+// 		log.Print("[RestAPI]: Error in loading book title from frontend: ", err)
+// 		c.JSON(400, gin.H{"error": err.Error()})
 
-func LoadBooks() []Book {
+// 		return
+// 	}
 
-	bookTable, err := libraryDB.Query("select * from books")
-	if err != nil {
-		log.Print("[RestAPI]: Error in quering library database: ", err)
-		return nil
-	}
+// 	books, err := FindBookWithTitle(bookTitle)
 
-	defer bookTable.Close()
+// 	if err != nil {
 
-	var currentBookId int = 1
-	var books []Book
+// 		log.Print("[RestAPI]: Error in finding books with a title: ", err)
+// 		c.JSON(400, gin.H{"error": err.Error()})
 
-	for bookTable.Next() {
+// 		return
+// 	}
 
-		var currentBook Book
-		err := bookTable.Scan(&currentBook.Id, &currentBook.Title, &currentBook.Author, &currentBook.ISBN)
-		if err != nil {
-			log.Print("[RestAPI]: Error in reading book with Id: ", currentBookId)
-			continue
-		}
-
-		currentBookId += 1
-		books = append(books, currentBook)
-	}
-
-	err = bookTable.Err()
-	if err != nil {
-		log.Print("[RestAPI]: Unecspected error:", err)
-		return nil
-	}
-
-	return books
-}
-
-func FindBookWithTitle(bookTitle string) ([]Book, error) {
-
-	booksWithTitle, err := libraryDB.Query("select * from books where title = ?", bookTitle)
-
-	if err != nil {
-		log.Print("[RestAPI]: Error in finding book into library database: ", err)
-		return nil, err
-	}
-
-	defer booksWithTitle.Close()
-
-	currentBookId := 1
-	books := []Book{}
-
-	for booksWithTitle.Next() {
-
-		var currentBook Book
-		err = booksWithTitle.Scan(&currentBook.Id, &currentBook.Title, &currentBook.Author, &currentBook.ISBN)
-
-		if err != nil {
-			log.Print("[RestAPI]: Error in reading book with Id: ", currentBookId)
-			continue
-		}
-
-		currentBookId += 1
-		books = append(books, currentBook)
-	}
-
-	err = booksWithTitle.Err()
-	if err != nil {
-		log.Print("[RestAPI]: Unecspected error:", err)
-		return nil, err
-	}
-
-	return books, nil
-}
-
-func HandleGET(c *gin.Context) {
-	books := LoadBooks()
-	c.JSON(200, books)
-}
-
-func HandlePOST(c *gin.Context) {
-
-	var newBook Book
-
-	err := c.ShouldBindJSON(&newBook)
-
-	if err != nil {
-
-		log.Print("[RestAPI]: Error in loading book sent from frontend: ", err)
-		c.JSON(400, gin.H{"error": err.Error()})
-
-		return
-	}
-
-	err = newBook.InertBook()
-
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(201, newBook)
-}
-
-func HandleFIND(c *gin.Context) {
-
-	var bookTitle string
-
-	err := c.ShouldBindJSON(bookTitle)
-
-	if err != nil {
-
-		log.Print("[RestAPI]: Error in loading book title from frontend: ", err)
-		c.JSON(400, gin.H{"error": err.Error()})
-
-		return
-	}
-
-	books, err := FindBookWithTitle(bookTitle)
-
-	if err != nil {
-
-		log.Print("[RestAPI]: Error in finding books with a title: ", err)
-		c.JSON(400, gin.H{"error": err.Error()})
-
-		return
-	}
-
-	c.JSON(200, books)
-}
+// 	c.JSON(200, books)
+// }
 
 func main() {
 
@@ -208,12 +79,11 @@ func main() {
 
 	router.Use(cors.Default())
 
-	libraryDB = ConnectDataBase()
-	defer libraryDB.Close()
+	httpmethods.LibraryDB = httpmethods.ConnectDataBase()
+	defer httpmethods.LibraryDB.Close()
 
-	router.GET("/books", HandleGET)
-	router.POST("/books", HandlePOST)
-	router.Handle("FIND", "/books", HandleFIND)
+	router.GET("/books", httpmethods.HandleGET)
+	router.POST("/books", httpmethods.HandlePOST)
 
 	router.Run(":8080")
 }
