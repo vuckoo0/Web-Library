@@ -22,15 +22,14 @@ searchForm.addEventListener('submit', event => {
 });
 
 function addBookToTable(book) {
+    
     const row = document.createElement('tr');
 
-    row.innerHTML = `
-        <td>${book.title}</td>
-        <td>${book.author}</td>
-        <td>${book.isbn}</td>
-    `
-
-    bookTable.appendChild(row)
+    ['title', 'author', 'isbn'].forEach(field => {
+        const td = document.createElement('td');
+        td.textContent = book[field];
+        row.appendChild(td);
+    });
 }
 
 async function loadBooksWithTitle(book) {
