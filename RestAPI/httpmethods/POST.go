@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (b *Book) InertBook() error {
+func (b *Book) InsertBook() error {
 
 	result, err := LibraryDB.Exec("insert into books (title, author, isbn) values (?, ?, ?)", b.Title, b.Author, b.ISBN)
 	if err != nil {
@@ -37,7 +37,7 @@ func HandlePOST(c *gin.Context) {
 		return
 	}
 
-	err = newBook.InertBook()
+	err = newBook.InsertBook()
 
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})

@@ -31,7 +31,7 @@ func loadDotenv() {
 		log.Fatal("[RestAPI]: Error in loading .env file: ", err)
 	}
 
-	log.Println("[RestAPI]: Succesfully loaded info from .env")
+	log.Println("[RestAPI]: Successfully loaded info from .env")
 }
 
 func ConnectDataBase() *sql.DB {
@@ -48,7 +48,7 @@ func ConnectDataBase() *sql.DB {
 		log.Fatal("[RestAPI]: Error in library database pinging", err)
 	}
 
-	log.Print("[RestAPI]: Succsesfully connected to the library")
+	log.Print("[RestAPI]: Succsessfully connected to the library")
 
 	return db
 }

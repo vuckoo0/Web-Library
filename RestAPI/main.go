@@ -38,7 +38,7 @@ import (
 
 // 	err = booksWithTitle.Err()
 // 	if err != nil {
-// 		log.Print("[RestAPI]: Unecspected error:", err)
+// 		log.Print("[RestAPI]: Unexpected error:", err)
 // 		return nil, err
 // 	}
 
