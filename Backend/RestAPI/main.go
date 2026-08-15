@@ -17,11 +17,11 @@ func main() {
 	router.Use(cors.Default())
 
 	recorder.LibraryDB = recorder.ConnectDataBase()
-
 	defer recorder.LibraryDB.Close()
 
 	router.GET("/books", httpmethods.HandleGET)
 	router.POST("/books", httpmethods.HandlePOST)
+	router.GET("/books/search", httpmethods.HandleGETWithURLParams)
 
 	router.Run(":8080")
 }

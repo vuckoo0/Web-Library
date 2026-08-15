@@ -1,18 +1,18 @@
 package httpmethods
 
 import (
-	"log"
 	recorder "main/recorder"
 
 	"github.com/gin-gonic/gin"
 )
 
-func loadBooks(c chan []Book) {
+func loadBooks(c chan []Book, errChan chan error) {
 
 	bookTable, err := recorder.LibraryDB.Query("select * from books")
 	if err != nil {
-		log.Print("[RestAPI]: Error in quering library database: ", err)
 		c <- nil
+		errChan <- err
+		return
 	}
 
 	defer bookTable.Close()
@@ -25,7 +25,6 @@ func loadBooks(c chan []Book) {
 		var currentBook Book
 		err := bookTable.Scan(&currentBook.Id, &currentBook.Title, &currentBook.Author, &currentBook.ISBN)
 		if err != nil {
-			log.Print("[RestAPI]: Error in reading book with Id: ", currentBookId)
 			continue
 		}
 
@@ -35,17 +34,21 @@ func loadBooks(c chan []Book) {
 
 	err = bookTable.Err()
 	if err != nil {
-		log.Print("[RestAPI]: Unexpected error:", err)
 		c <- nil
+		errChan <- err
+		return
 	}
 
 	c <- books
+	errChan <- nil
 }
 
 func HandleGET(c *gin.Context) {
 
-	bookChanel := make(chan []Book)
-	go loadBooks(bookChanel)
+	bookChanel := make(chan []Book, 1)
+	errorChanel := make(chan error, 1)
+
+	go loadBooks(bookChanel, errorChanel)
 
 	books := <-bookChanel
 	c.JSON(200, books)
