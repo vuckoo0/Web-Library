@@ -1,5 +1,4 @@
 const form = document.querySelector('form')
-console.log(form)
 
 async function saveBookToDB(book) {
     
@@ -10,6 +9,10 @@ async function saveBookToDB(book) {
         },
         body: JSON.stringify(book)
     });
+
+    if (!response.ok) {
+        throw new Error(`Server error: ${response.error}`)
+    }
 
     const savedBook = await response.json();
     return savedBook;
