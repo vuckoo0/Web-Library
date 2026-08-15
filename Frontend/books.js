@@ -30,6 +30,8 @@ function addBookToTable(book) {
         td.textContent = book[field];
         row.appendChild(td);
     });
+
+    bookTable.appendChild(row)
 }
 
 async function loadBooksWithTitle(book) {

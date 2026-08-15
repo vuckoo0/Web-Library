@@ -34,8 +34,9 @@ form.addEventListener('submit', async (event) => {
 
         const savedBook = await saveBookToDB(newBook);
 
-        form.reset();
         alert('Book added!')
+        form.reset();
+        
     } catch (error) {
         console.log("[-] Error: ", error)
     }
