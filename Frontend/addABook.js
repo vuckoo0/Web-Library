@@ -24,7 +24,7 @@ async function saveBookToDB(book) {
 async function editBookFromDB(newBook) {
     
     const response = await fetch(`http://localhost:8080/books?id=${newBook.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
