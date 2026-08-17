@@ -43,7 +43,7 @@ func bookID(title string) ([]int, error) {
 	return IDs, nil
 }
 
-func HandlePUT(c *gin.Context) {
+func HandlePATCH(c *gin.Context) {
 
 	Id, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
