@@ -5,7 +5,7 @@ function addBookToTable(book) {
     
     const row = document.createElement('tr');
 
-    ['title', 'author', 'isbn'].forEach(field => {
+    ['id', 'title', 'author', 'isbn'].forEach(field => {
         const td = document.createElement('td');
         td.textContent = book[field];
         row.appendChild(td);

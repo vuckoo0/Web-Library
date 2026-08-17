@@ -28,15 +28,6 @@ nav {
     font-size: large;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    justify-content: center; 
-    align-items: center;
-    min-height: 100px;
-}
-
 label {
     margin-bottom: 4px;
     font-weight: bold;
@@ -45,6 +36,12 @@ label {
 h1 {
     color: rgb(44, 44, 44);
     text-align: center;
+}
+
+h2 {
+    color: rgb(44, 44, 44);
+    text-align: center;
+    margin: 15px;
 }
 
 .book-table {
@@ -70,7 +67,12 @@ h1 {
 }
 
 .book-form {
-    min-height: 300px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center; 
+    align-items: center;
 }
 
 .form-field {
@@ -80,6 +82,35 @@ h1 {
 .form-field input {
     width: 300px;
     height: 20px;
+}
+
+.search-form {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center; 
+    align-items: center;
+}
+
+.edit-book {
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center; 
+    align-items: center;
+}
+.edit-book-form {
+    text-align: center;
+}
+
+.book-field-selector {
+    text-align: center;
+}
+
+.option {
+    margin: 30px;
 }
 
 @media (max-width: 600px) {
