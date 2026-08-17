@@ -22,6 +22,7 @@ func main() {
 	router.GET("/books", httpmethods.HandleGET)
 	router.POST("/books", httpmethods.HandlePOST)
 	router.GET("/books/search", httpmethods.HandleGETWithURLParams)
+	router.PUT("/books", httpmethods.HandlePUT)
 
 	router.Run(":8080")
 }
