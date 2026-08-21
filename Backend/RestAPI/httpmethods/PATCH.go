@@ -14,35 +14,6 @@ func editBookFromDB(id int, field, newValue string, errChan chan error) {
 	errChan <- err
 }
 
-func bookID(title string) ([]int, error) {
-
-	result, err := recorder.LibraryDB.Query("select id where title = ?", title)
-	if err != nil {
-		return nil, err
-	}
-	defer result.Close()
-
-	IDs := []int{}
-	for result.Next() {
-
-		var currentID int
-		err = result.Scan(&currentID)
-
-		if err != nil {
-			return nil, err
-		}
-
-		IDs = append(IDs, currentID)
-	}
-
-	err = result.Err()
-	if err != nil {
-		return nil, err
-	}
-
-	return IDs, nil
-}
-
 func HandlePATCH(c *gin.Context) {
 
 	Id, err := strconv.Atoi(c.Query("id"))
