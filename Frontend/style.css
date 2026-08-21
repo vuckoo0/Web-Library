@@ -1,10 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
 * {
     box-sizing: border-box;
 }
 
+button {
+    font-family: 'Lora', serif;
+}
+
 body {
-    font-family: 'Times New Roman', Times, serif;
-    background-color: rgb(250, 235, 215);
+    font-family: 'Lora', serif;
+    background: linear-gradient(to bottom, rgb(241, 218, 187), rgb(236, 178, 124));
     display: grid;
     grid-template-rows: auto 1fr auto;
     min-height: 100vh;
