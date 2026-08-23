@@ -14,7 +14,7 @@ async function saveBookToDB(book) {
     });
 
     if (!response.ok) {
-        throw new Error(`Server error: ${response.error}`)
+        throw new Error(`Server error: ${response.error}`);
     }
 
     const savedBook = await response.json();

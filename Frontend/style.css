@@ -21,7 +21,6 @@ footer {
     background-color: rgb(255, 255, 255);
     margin: 0;
     height: 50px;
-    border-top: 1px solid rgb(51, 51, 51);
     text-align: center;
     font-weight: bold;
 }
@@ -32,6 +31,7 @@ nav {
     justify-content: center;
     align-items: center;
     font-size: large;
+    background-color: white;
 }
 
 label {
@@ -42,12 +42,6 @@ label {
 h1 {
     color: rgb(44, 44, 44);
     text-align: center;
-}
-
-h2 {
-    color: rgb(44, 44, 44);
-    text-align: center;
-    margin: 15px;
 }
 
 .book-table {
@@ -117,6 +111,28 @@ h2 {
 
 .option {
     margin: 30px;
+}
+
+.page-title {
+    background: radial-gradient(rgb(235, 193, 154), rgb(238, 213, 189));
+    color: rgb(44, 44, 44);
+    text-align: center;
+    margin: 0;
+}
+
+.nav-button {
+    border: 0px;
+    min-height: 32px;
+    min-width: 64px;
+    font-size: 16px;
+    font-family: 'Lora', serif;
+    font-weight: 500;
+    background-color: white;
+}
+
+.nav-button:hover {
+    background-color: rgb(236, 178, 124);
+    color: white;
 }
 
 @media (max-width: 600px) {

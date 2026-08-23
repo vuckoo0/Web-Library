@@ -1,5 +1,5 @@
-const bookTable = document.querySelector('.book-table tbody')
-const searchForm = document.querySelector('form')
+const bookTable = document.querySelector('.book-table tbody');
+const searchForm = document.querySelector('form');
 
 function addBookToTable(book) {
     
