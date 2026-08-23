@@ -1,6 +1,9 @@
 const bookTable = document.querySelector('.book-table tbody');
 const searchForm = document.querySelector('form');
 
+const startPageButton = document.querySelector('#start-page-button');
+const adminPanelButton = document.querySelector('#admin-panel-button');
+
 function addBookToTable(book) {
     
     const row = document.createElement('tr');
@@ -43,6 +46,14 @@ async function loadBooksFromDB() {
         console.log("[-] Error:", error);
     }
 }
+
+startPageButton.addEventListener('click', event => {
+    window.location.href = 'index.html';
+})
+
+adminPanelButton.addEventListener('click', event => {
+    window.location.href = 'adminPanel.html';
+})
 
 searchForm.querySelector('#refresh').addEventListener('click', () => {
     document.querySelector('#search').value = '';

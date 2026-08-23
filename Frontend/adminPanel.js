@@ -2,6 +2,8 @@ const addBookForm = document.querySelector('.book-form');
 const editBookButton = document.querySelector('.edit-book button')
 const editBookForm = document.querySelector('.edit-book-form');
 const editBookSelector = document.querySelector('.book-field-selector');
+const startPageButton = document.querySelector('#start-page-button');
+const booksButton = document.querySelector('#books-button');
 
 async function saveBookToDB(book) {
     
@@ -41,6 +43,14 @@ async function editBookFromDB(newBook) {
     const editedBook = await response.json();
     return editedBook;
 }
+
+startPageButton.addEventListener('click', event => {
+    window.location.href = 'index.html';
+})
+
+booksButton.addEventListener('click', event => {
+    window.location.href = 'books.html';
+})
 
 editBookButton.addEventListener('click', async (event) => {
 
