@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -127,4 +128,55 @@ func InsertBook(b *models.Book, errChan chan error) {
 func EditBookFromDB(id int, field, newValue string, errChan chan error) {
 	_, err := LibraryDB.Exec(fmt.Sprintf("update books set %s = ? where id = ?", field), newValue, id)
 	errChan <- err
+}
+
+func IsUsernameTaken(username string) (bool, error) {
+
+	var id int
+	err := LibraryDB.QueryRow("select id from users where `Name` = ?", username).Scan(&id)
+
+	switch err {
+	case sql.ErrNoRows:
+		return false, nil
+	case nil:
+		return true, nil
+	default:
+		return false, err
+	}
+}
+
+func AddUserToDB(u *models.User, errorChanel chan error) {
+
+	usedUsername, err := IsUsernameTaken(u.Name)
+	if err != nil {
+		errorChanel <- err
+		return
+	}
+
+	if usedUsername {
+		errorChanel <- fmt.Errorf("Username already taken!")
+		return
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	if err != nil {
+		errorChanel <- err
+		return
+	}
+
+	u.Password = string(hashedPassword[:])
+
+	result, err := LibraryDB.Exec("insert into users (`name`, `password`, privilege) values (?, ?, ?)", u.Name, u.Password, u.Privilege)
+	if err != nil {
+		errorChanel <- err
+		return
+	}
+
+	u.Id, err = result.LastInsertId()
+	if err != nil {
+		errorChanel <- err
+		return
+	}
+
+	errorChanel <- nil
 }

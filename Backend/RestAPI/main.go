@@ -20,8 +20,11 @@ func main() {
 	defer storage.LibraryDB.Close()
 
 	router.GET("/books", api.HandleGET)
-	router.POST("/books", api.HandlePOST)
 	router.GET("/books/search", api.HandleGETWithURLParams)
+
+	router.POST("/register", api.HandlePOSTRegister)
+	router.POST("/books", api.HandlePOST)
+
 	router.PATCH("/books", api.HandlePATCH)
 
 	router.Run(":8080")
