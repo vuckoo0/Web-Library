@@ -1,4 +1,4 @@
-package httpmethods
+package api
 
 import (
 	recorder "main/recorder"

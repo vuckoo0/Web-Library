@@ -1,7 +1,7 @@
 package main
 
 import (
-	httpmethods "main/httpmethods"
+	api "main/api"
 	recorder "main/recorder"
 
 	"github.com/gin-contrib/cors"
@@ -19,10 +19,10 @@ func main() {
 	recorder.LibraryDB = recorder.ConnectDataBase()
 	defer recorder.LibraryDB.Close()
 
-	router.GET("/books", httpmethods.HandleGET)
-	router.POST("/books", httpmethods.HandlePOST)
-	router.GET("/books/search", httpmethods.HandleGETWithURLParams)
-	router.PATCH("/books", httpmethods.HandlePATCH)
+	router.GET("/books", api.HandleGET)
+	router.POST("/books", api.HandlePOST)
+	router.GET("/books/search", api.HandleGETWithURLParams)
+	router.PATCH("/books", api.HandlePATCH)
 
 	router.Run(":8080")
 }
