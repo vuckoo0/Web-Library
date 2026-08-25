@@ -1,18 +1,12 @@
 package api
 
 import (
-	"fmt"
 	"log"
-	"main/recorder"
+	"main/storage"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
-
-func editBookFromDB(id int, field, newValue string, errChan chan error) {
-	_, err := recorder.LibraryDB.Exec(fmt.Sprintf("update books set %s = ? where id = ?", field), newValue, id)
-	errChan <- err
-}
 
 func HandlePATCH(c *gin.Context) {
 
@@ -36,7 +30,7 @@ func HandlePATCH(c *gin.Context) {
 	}
 
 	errorChanel := make(chan error, 1)
-	go editBookFromDB(Id, edit.Field, edit.NewValue, errorChanel)
+	go storage.EditBookFromDB(Id, edit.Field, edit.NewValue, errorChanel)
 
 	err = <-errorChanel
 	if err != nil {

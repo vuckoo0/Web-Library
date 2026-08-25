@@ -1,8 +1,6 @@
-package api
+package models
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type Book struct {
 	Id     int64  `json:"id"`

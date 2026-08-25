@@ -2,7 +2,7 @@ package main
 
 import (
 	api "main/api"
-	recorder "main/recorder"
+	storage "main/storage"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -16,8 +16,8 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	recorder.LibraryDB = recorder.ConnectDataBase()
-	defer recorder.LibraryDB.Close()
+	storage.LibraryDB = storage.ConnectDataBase()
+	defer storage.LibraryDB.Close()
 
 	router.GET("/books", api.HandleGET)
 	router.POST("/books", api.HandlePOST)

@@ -1,31 +1,15 @@
 package api
 
 import (
-	recorder "main/recorder"
+	models "main/models"
+	storage "main/storage"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (b *Book) InsertBook(errChan chan error) {
-
-	result, err := recorder.LibraryDB.Exec("insert into books (title, author, isbn) values (?, ?, ?)", b.Title, b.Author, b.ISBN)
-	if err != nil {
-		errChan <- err
-		return
-	}
-
-	b.Id, err = result.LastInsertId()
-	if err != nil {
-		errChan <- err
-		return
-	}
-
-	errChan <- nil
-}
-
 func HandlePOST(c *gin.Context) {
 
-	var newBook Book
+	var newBook models.Book
 	errorChanel := make(chan error)
 
 	err := c.ShouldBindJSON(&newBook)
@@ -35,7 +19,7 @@ func HandlePOST(c *gin.Context) {
 		return
 	}
 
-	go newBook.InsertBook(errorChanel)
+	go storage.InsertBook(&newBook, errorChanel)
 
 	err = <-errorChanel
 	if err != nil {
