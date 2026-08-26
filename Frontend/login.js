@@ -8,20 +8,21 @@ startMenuButton.addEventListener('click', event => {
 signUpForm.addEventListener('submit', async event => {
 
     event.preventDefault();
+    console.log('d');
 
     try {
 
         const newUser = {
-            name: document.querySelector('sign-up-user-name').value.trim(),
-            password: document.querySelector('sign-up-password').value.trim()
+            name: document.querySelector('#sign-up-user-name').value.trim(),
+            password: document.querySelector('#sign-up-password').value.trim()
         };
 
         if (newUser.name == '') {
-            alert('Enter a valid username!');
+            throw new Error('Enter a valid username!');
         }
 
         if (newUser.password == '') {
-            allert('Enter a valid password!');
+            throw new Error('Enter a valid password!');
         }
 
         const response = await fetch("http://localhost:8080/register", {
@@ -36,7 +37,7 @@ signUpForm.addEventListener('submit', async event => {
             throw new Error(`Server error: ${response.error}`)
         }
 
-        const addedUser = await response.json();
+        await response.json();;
 
         alert('Sign Up succsessful')
         signUpForm.reset();
@@ -44,5 +45,6 @@ signUpForm.addEventListener('submit', async event => {
     } catch (error) {
         alert(`An error ocured!: ${error}`)
         console.log(error)
+        signUpForm.reset();
     }
 });
