@@ -4,10 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"main/config"
 	models "main/models"
-	"os"
 
-	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -15,21 +14,9 @@ var (
 	LibraryDB *sql.DB
 )
 
-func loadDotenv() {
-
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("[RestAPI]: Error in loading .env file: ", err)
-	}
-
-	log.Println("[RestAPI]: Successfully loaded info from .env")
-}
-
 func ConnectDataBase() *sql.DB {
 
-	loadDotenv()
-
-	db, err := sql.Open("mysql", os.Getenv("DB_DNS"))
+	db, err := sql.Open("mysql", config.Config().DB_DSN)
 	if err != nil {
 		log.Fatal("[RestAPI]: Error in opening the library database: ", err)
 	}

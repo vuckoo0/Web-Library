@@ -8,7 +8,6 @@ startMenuButton.addEventListener('click', event => {
 signUpForm.addEventListener('submit', async event => {
 
     event.preventDefault();
-    console.log('d');
 
     try {
 
