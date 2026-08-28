@@ -144,6 +144,8 @@ h1 {
     align-items: center;
     gap: 8px;
     font-size: small;
+    min-width: 30px;
+    min-height: 32px;
 }
 
 #status-dot {
@@ -152,6 +154,56 @@ h1 {
     border-radius: 50%;
     background-color: rgb(34, 223, 34);
     position: absolute;
+    right: 90px;
+}
+
+#status-username {
+    position: relative;
+}
+
+#status-username-button {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    color: inherit;
+    padding: 0px;
+    min-height: 32px;
+    min-width: 64px;
+}
+
+#status-username-button:hover {
+    background-color: rgb(236, 178, 124);
+    color: white;
+}
+
+#status-username-dropdown {
+    display: none;
+    position: absolute;
+    right: 0px;
+    top: calc(100% + 1px);
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    min-width: 120px;
+    z-index: 10;
+}
+
+#status-username-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    border-radius: 4px;
+}
+
+#status-username-dropdown button:hover {
+    background-color: rgb(218, 218, 218);
 }
 
 @media (max-width: 600px) {
