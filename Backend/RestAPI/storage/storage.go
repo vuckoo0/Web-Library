@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"main/config"
+	config "main/config"
 	models "main/models"
 
 	"golang.org/x/crypto/bcrypt"
@@ -117,18 +117,18 @@ func EditBookFromDB(id int, field, newValue string, errChan chan error) {
 	errChan <- err
 }
 
-func IsUsernameTaken(username string) (bool, error) {
+func IsUsernameTaken(username string) (int64, error) {
 
-	var id int
+	var id int64
 	err := LibraryDB.QueryRow("select id from users where `Name` = ?", username).Scan(&id)
 
 	switch err {
 	case sql.ErrNoRows:
-		return false, nil
+		return -1, nil
 	case nil:
-		return true, nil
+		return id, nil
 	default:
-		return false, err
+		return -1, err
 	}
 }
 
@@ -140,7 +140,7 @@ func AddUserToDB(u *models.User, errorChanel chan error) {
 		return
 	}
 
-	if usedUsername {
+	if usedUsername != -1 {
 		errorChanel <- fmt.Errorf("Username already taken!")
 		return
 	}
@@ -166,4 +166,21 @@ func AddUserToDB(u *models.User, errorChanel chan error) {
 	}
 
 	errorChanel <- nil
+}
+
+func GetPrivilege(userId int64, errorChanel chan error, resultChanel chan int) {
+
+	var privilege int
+	err := LibraryDB.QueryRow("select privilege from users where id = ?", userId).Scan(&privilege)
+
+	errorChanel <- err
+	resultChanel <- privilege
+}
+
+func GetPassword(userId int64) (string, error) {
+
+	var password string
+	err := LibraryDB.QueryRow("select password from users where id = ?", userId).Scan(&password)
+
+	return password, err
 }

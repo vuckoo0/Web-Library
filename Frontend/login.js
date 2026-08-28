@@ -1,5 +1,6 @@
 const startMenuButton = document.querySelector('#start-page-button');
 const signUpForm = document.querySelector('#sign-up-form');
+const logInForm = document.querySelector('#log-in-form')
 
 startMenuButton.addEventListener('click', event => {
     window.location.href = 'index.html';
@@ -24,7 +25,7 @@ signUpForm.addEventListener('submit', async event => {
             throw new Error('Enter a valid password!');
         }
 
-        const response = await fetch("http://localhost:8080/register", {
+        const response = await fetch('http://localhost:8080/register', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -36,8 +37,6 @@ signUpForm.addEventListener('submit', async event => {
             throw new Error(`Server error: ${response.error}`)
         }
 
-        await response.json();;
-
         alert('Sign Up succsessful')
         signUpForm.reset();
         
@@ -45,5 +44,60 @@ signUpForm.addEventListener('submit', async event => {
         alert(`An error ocured!: ${error}`)
         console.log(error)
         signUpForm.reset();
+    }
+});
+
+logInForm.addEventListener('submit', async event => {
+
+    event.preventDefault();
+
+    try {
+
+        console.log('d');
+
+        const loggingUser = {
+            name: document.querySelector('#log-in-user-name').value.trim(),
+            password: document.querySelector('#log-in-user-password').value.trim()
+        };
+
+        console.log('d');
+
+        if (loggingUser.name == '') {
+            throw new Error('Enter a valid username!');
+        }
+
+        console.log('d');
+
+        if (loggingUser.password == '') {
+            throw new Error('Enter a valid password!');
+        }
+
+        console.log('d');
+
+        const response = await fetch('http://localhost:8080/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(loggingUser)
+        });
+
+        console.log('d');
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.error}`)
+        }
+
+        console.log('d');
+
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('name', data.name);
+
+        console.log('d');
+
+    } catch (error) {
+        alert(`An error ocured!: ${error}`);
+        logInForm.reset();
     }
 });

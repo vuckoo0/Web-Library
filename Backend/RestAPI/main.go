@@ -22,7 +22,8 @@ func main() {
 	router.GET("/books", api.HandleGET)
 	router.GET("/books/search", api.HandleGETWithURLParams)
 
-	router.POST("/register", api.HandlePOSTRegister)
+	router.POST("/login", api.HandleLogIn)
+	router.POST("/register", api.HandleSignUp)
 	router.POST("/books", api.HandlePOST)
 
 	router.PATCH("/books", api.HandlePATCH)

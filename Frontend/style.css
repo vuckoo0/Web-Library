@@ -32,6 +32,7 @@ nav {
     align-items: center;
     font-size: large;
     background-color: white;
+    position: relative;
 }
 
 label {
@@ -134,6 +135,23 @@ h1 {
 .nav-button:hover {
     background-color: rgb(236, 178, 124);
     color: white;
+}
+
+#online-status {
+    position: absolute;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: small;
+}
+
+#status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgb(34, 223, 34);
+    position: absolute;
 }
 
 @media (max-width: 600px) {
