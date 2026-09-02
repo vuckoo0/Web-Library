@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"main/auth"
 	models "main/models"
 	storage "main/storage"
@@ -67,12 +68,14 @@ func HandleLogIn(c *gin.Context) {
 
 	err = auth.CheckUserCredentials(&loggingUser)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 
 	token, err := auth.GenerateToken(loggingUser.Id)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}

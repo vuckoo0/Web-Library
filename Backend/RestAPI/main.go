@@ -2,6 +2,7 @@ package main
 
 import (
 	api "main/api"
+	middleware "main/middleware"
 	storage "main/storage"
 
 	"github.com/gin-contrib/cors"
@@ -14,13 +15,18 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.Default()
-	router.Use(cors.Default())
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://127.0.0.1:5500"},
+		AllowMethods: []string{"GET", "POST", "PATCH", "DELETE"},
+		AllowHeaders: []string{"Content-Type", "Authorization"},
+	}))
 
 	storage.LibraryDB = storage.ConnectDataBase()
 	defer storage.LibraryDB.Close()
 
-	router.GET("/books", api.HandleGET)
-	router.GET("/books/search", api.HandleGETWithURLParams)
+	router.GET("/books", middleware.AuthenticationMiddleware(), api.HandleGET)
+	router.GET("/books/search", middleware.AuthenticationMiddleware(), api.HandleGETWithURLParams)
 
 	router.POST("/login", api.HandleLogIn)
 	router.POST("/register", api.HandleSignUp)
