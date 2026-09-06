@@ -4,6 +4,16 @@ const searchForm = document.querySelector('form');
 const startPageButton = document.querySelector('#start-page-button');
 const adminPanelButton = document.querySelector('#admin-panel-button');
 
+function showWarning(message) {
+    const warning = document.querySelector('.warning');
+    warning.textContent = message;
+    warning.style.display = 'block';
+}
+
+function hideWarning() {
+    document.querySelector('.warning').style.display = 'none';
+}
+
 function addBookToTable(book) {
     
     const row = document.createElement('tr');
@@ -21,7 +31,12 @@ async function loadBooksWithTitle(book) {
     
     try {
 
-        const response = await fetch(`http://localhost:8080/books/search?title=${encodeURIComponent(book.title)}`);
+        const response = await fetch(`http://localhost:8080/books/search?title=${encodeURIComponent(book.title)}`, {
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
         const booksWithTitle = await response.json();
 
         bookTable.innerHTML = '';
@@ -36,7 +51,11 @@ async function loadBooksFromDB() {
     
     try {
 
-        const response = await fetch('http://localhost:8080/books');
+        const response = await fetch('http://localhost:8080/books', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
         const books = await response.json();
 
         bookTable.innerHTML = '';
@@ -57,18 +76,24 @@ adminPanelButton.addEventListener('click', event => {
 
 searchForm.querySelector('#refresh').addEventListener('click', () => {
     document.querySelector('#search').value = '';
+    hideWarning();
     loadBooksFromDB();
 });
 
 searchForm.addEventListener('submit', event => {
 
     event.preventDefault();
+    hideWarning();
 
     try {
 
         const book = {
             title: document.querySelector('#search').value.trim()
         };
+
+        if (book.title == '') {
+            showWarning('Invalid book title!');
+        }
 
         loadBooksWithTitle(book);
         

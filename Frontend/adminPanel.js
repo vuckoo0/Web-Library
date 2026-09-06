@@ -10,6 +10,7 @@ async function saveBookToDB(book) {
     const response = await fetch('http://localhost:8080/books', {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(book)
@@ -28,6 +29,7 @@ async function editBookFromDB(newBook) {
     const response = await fetch(`http://localhost:8080/books?id=${newBook.id}`, {
         method: 'PATCH',
         headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -37,7 +39,7 @@ async function editBookFromDB(newBook) {
     });
 
     if (!response.ok) {
-        throw new Error(`Server error: ${response.error}`);
+        throw new Error(`Server error: ${response.statusText}`);
     }
 
     const editedBook = await response.json();
@@ -72,7 +74,7 @@ editBookButton.addEventListener('click', async (event) => {
             throw new Error('Enter a valid new value!');
         }
 
-        const newBook = editBookFromDB(bookChange);
+        const newBook = await editBookFromDB(bookChange);
 
         if (!newBook.ok) {
             console.log(newBook.error);

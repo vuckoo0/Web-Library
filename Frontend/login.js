@@ -53,26 +53,18 @@ logInForm.addEventListener('submit', async event => {
 
     try {
 
-        console.log('d');
-
         const loggingUser = {
             name: document.querySelector('#log-in-user-name').value.trim(),
             password: document.querySelector('#log-in-user-password').value.trim()
         };
 
-        console.log('d');
-
         if (loggingUser.name == '') {
             throw new Error('Enter a valid username!');
         }
 
-        console.log('d');
-
         if (loggingUser.password == '') {
             throw new Error('Enter a valid password!');
         }
-
-        console.log('d');
 
         const response = await fetch('http://localhost:8080/login', {
             method: 'POST',
@@ -82,19 +74,13 @@ logInForm.addEventListener('submit', async event => {
             body: JSON.stringify(loggingUser)
         });
 
-        console.log('d');
-
         if (!response.ok) {
             throw new Error(`Server error: ${response.error}`)
         }
 
-        console.log('d');
-
         const data = await response.json();
         localStorage.setItem('token', data.token);
         localStorage.setItem('name', data.name);
-
-        console.log('d');
 
     } catch (error) {
         alert(`An error ocured!: ${error}`);
