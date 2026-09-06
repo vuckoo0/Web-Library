@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HandleGET(c *gin.Context) {
+func HandleLoadingBooks(c *gin.Context) {
 
 	bookChanel := make(chan []models.Book, 1)
 	errorChanel := make(chan error, 1)
@@ -18,7 +18,7 @@ func HandleGET(c *gin.Context) {
 	c.JSON(200, books)
 }
 
-func HandleGETWithURLParams(c *gin.Context) {
+func HandleBookSearch(c *gin.Context) {
 
 	title := c.Query("title")
 

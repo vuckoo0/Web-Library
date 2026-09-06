@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HandlePOST(c *gin.Context) {
+func HandleAddingBook(c *gin.Context) {
 
 	var newBook models.Book
 	errorChanel := make(chan error)

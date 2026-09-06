@@ -25,14 +25,14 @@ func main() {
 	storage.LibraryDB = storage.ConnectDataBase()
 	defer storage.LibraryDB.Close()
 
-	router.GET("/books", middleware.AuthenticationMiddleware(), api.HandleGET)
-	router.GET("/books/search", middleware.AuthenticationMiddleware(), api.HandleGETWithURLParams)
+	router.GET("/books", middleware.AuthenticationMiddleware(), api.HandleLoadingBooks)
+	router.GET("/books/search", middleware.AuthenticationMiddleware(), api.HandleBookSearch)
 
 	router.POST("/login", api.HandleLogIn)
 	router.POST("/register", api.HandleSignUp)
-	router.POST("/books", api.HandlePOST)
 
-	router.PATCH("/books", api.HandlePATCH)
+	router.POST("/books", middleware.AuthenticationMiddleware(), middleware.PrivilegeAuthorization(0), api.HandleAddingBook)
+	router.PATCH("/books", middleware.AuthenticationMiddleware(), middleware.PrivilegeAuthorization(0), api.HandleBookFieldEdit)
 
 	router.Run(":8080")
 }

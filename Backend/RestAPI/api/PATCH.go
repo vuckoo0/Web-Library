@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HandlePATCH(c *gin.Context) {
+func HandleBookFieldEdit(c *gin.Context) {
 
 	Id, err := strconv.Atoi(c.Query("id"))
 	if err != nil {

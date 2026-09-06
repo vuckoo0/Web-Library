@@ -152,6 +152,7 @@ func AddUserToDB(u *models.User, errorChanel chan error) {
 	}
 
 	u.Password = string(hashedPassword[:])
+	u.Privilege = 1
 
 	result, err := LibraryDB.Exec("insert into users (`name`, `password`, privilege) values (?, ?, ?)", u.Name, u.Password, u.Privilege)
 	if err != nil {

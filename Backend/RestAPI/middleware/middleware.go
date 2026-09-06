@@ -10,12 +10,12 @@ import (
 )
 
 func AuthenticationMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		authHeader := c.GetHeader("Authorization")
+	return func(ctx *gin.Context) {
+		authHeader := ctx.GetHeader("Authorization")
 		if authHeader == "" {
 			log.Println(authHeader)
-			c.JSON(401, gin.H{"error": "missing authorization header"})
-			c.Abort()
+			ctx.JSON(401, gin.H{"error": "missing authorization header"})
+			ctx.Abort()
 			return
 		}
 
@@ -27,32 +27,72 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 
 		if err != nil {
 			log.Println(err)
-			c.JSON(401, gin.H{"error": "invalid or expired token"})
-			c.Abort()
+			ctx.JSON(401, gin.H{"error": "invalid or expired token"})
+			ctx.Abort()
 			return
 		}
 
 		if !token.Valid {
 			log.Println(err)
-			c.JSON(401, gin.H{"error": "invalid token"})
-			c.Abort()
+			ctx.JSON(401, gin.H{"error": "invalid token"})
+			ctx.Abort()
 			return
 		}
 
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok {
 			log.Println(err)
-			c.JSON(401, gin.H{"error": "invalid claims"})
-			c.Abort()
+			ctx.JSON(401, gin.H{"error": "invalid claims"})
+			ctx.Abort()
 			return
 		}
 
-		userId := claims["user_id"]
-		privilege := claims["privilege"]
+		temp, ok := claims["user_id"].(float64)
 
-		c.Set("user_id", userId)
-		c.Set("privilege", privilege)
+		if !ok {
+			log.Println("invalid userId claim ", ok, claims["user_id"])
+			ctx.JSON(401, gin.H{"error": "invalid userId claim"})
+			ctx.Abort()
+			return
+		}
 
-		c.Next()
+		userId := int(temp)
+
+		temp, ok = claims["privilege"].(float64)
+
+		if !ok {
+			log.Println("invalid privilege claim ", ok, claims["privilege"])
+			ctx.JSON(401, gin.H{"error": "invalid privilege claim"})
+			ctx.Abort()
+			return
+		}
+
+		privilege := int(temp)
+
+		ctx.Set("user_id", userId)
+		ctx.Set("privilege", privilege)
+
+		ctx.Next()
+	}
+}
+
+func PrivilegeAuthorization(minPrivilege int) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		privilege := ctx.GetInt("privilege")
+
+		if privilege < 0 {
+			ctx.JSON(403, gin.H{"error": "invalid privilege"})
+			ctx.Abort()
+			return
+		}
+
+		if privilege > minPrivilege {
+			ctx.JSON(403, gin.H{"error": "insufficient privilege"})
+			ctx.Abort()
+			return
+		}
+
+		ctx.Next()
 	}
 }
