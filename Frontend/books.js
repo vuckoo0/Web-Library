@@ -21,7 +21,11 @@ async function loadBooksWithTitle(book) {
     
     try {
 
-        const response = await fetch(`http://localhost:8080/books/search?title=${encodeURIComponent(book.title)}`);
+        const response = await fetch(`http://localhost:8080/books/search?title=${encodeURIComponent(book.title)}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
         const booksWithTitle = await response.json();
 
         bookTable.innerHTML = '';
@@ -36,7 +40,11 @@ async function loadBooksFromDB() {
     
     try {
 
-        const response = await fetch('http://localhost:8080/books');
+        const response = await fetch('http://localhost:8080/books', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
         const books = await response.json();
 
         bookTable.innerHTML = '';
