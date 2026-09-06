@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	api "main/api"
+	"main/logs"
 	middleware "main/middleware"
 	storage "main/storage"
 
@@ -11,6 +13,11 @@ import (
 )
 
 func main() {
+
+	err := logs.Setup()
+	if err != nil {
+		log.Fatal("[log.Setup] An error ocured!: ", err)
+	}
 
 	gin.SetMode(gin.ReleaseMode)
 
