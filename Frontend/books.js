@@ -33,8 +33,8 @@ async function loadBooksWithTitle(book) {
 
         const response = await fetch(`http://localhost:8080/books/search?title=${encodeURIComponent(book.title)}`, {
             headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
         });
         const booksWithTitle = await response.json();
