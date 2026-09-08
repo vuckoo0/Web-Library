@@ -9,8 +9,8 @@ function removeToken() {
 
 function getTokenPayload(token) {
     try {
-        const base64 = token.split('.')[1]; // JWT has 3 parts: header.payload.signature
-        return JSON.parse(atob(base64));    // atob decodes base64
+        const base64 = token.split('.')[1];
+        return JSON.parse(atob(base64)); 
     } catch {
         return null;
     }

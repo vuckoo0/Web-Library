@@ -5,9 +5,11 @@ const editBookSelector = document.querySelector('.book-field-selector');
 const startPageButton = document.querySelector('#start-page-button');
 const booksButton = document.querySelector('#books-button');
 
+const API_URL = window.location.hostname;
+
 async function saveBookToDB(book) {
     
-    const response = await fetch('http://localhost:8080/books', {
+    const response = await fetch(`${API_URL}/books`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -26,7 +28,7 @@ async function saveBookToDB(book) {
 
 async function editBookFromDB(newBook) {
     
-    const response = await fetch(`http://localhost:8080/books?id=${newBook.id}`, {
+    const response = await fetch(`${API_URL}/books?id=${newBook.id}`, {
         method: 'PATCH',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,

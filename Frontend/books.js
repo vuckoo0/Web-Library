@@ -4,6 +4,8 @@ const searchForm = document.querySelector('form');
 const startPageButton = document.querySelector('#start-page-button');
 const adminPanelButton = document.querySelector('#admin-panel-button');
 
+const API_URL = `http://${window.location.hostname}:8080`;
+
 function showWarning(message) {
     const warning = document.querySelector('.warning');
     warning.textContent = message;
@@ -31,7 +33,7 @@ async function loadBooksWithTitle(book) {
     
     try {
 
-        const response = await fetch(`http://localhost:8080/books/search?title=${encodeURIComponent(book.title)}`, {
+        const response = await fetch(`${API_URL}/books/search?title=${encodeURIComponent(book.title)}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -51,7 +53,7 @@ async function loadBooksFromDB() {
     
     try {
 
-        const response = await fetch('http://localhost:8080/books', {
+        const response = await fetch(`${API_URL}/books`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },

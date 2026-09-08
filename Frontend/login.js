@@ -1,6 +1,8 @@
 const startMenuButton = document.querySelector('#start-page-button');
 const signUpForm = document.querySelector('#sign-up-form');
-const logInForm = document.querySelector('#log-in-form')
+const logInForm = document.querySelector('#log-in-form');
+
+const API_URL = `http://${window.location.hostname}:8080`;
 
 startMenuButton.addEventListener('click', event => {
     window.location.href = 'index.html';
@@ -25,7 +27,7 @@ signUpForm.addEventListener('submit', async event => {
             throw new Error('Enter a valid password!');
         }
 
-        const response = await fetch('http://localhost:8080/register', {
+        const response = await fetch(`${API_URL}/register`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -66,7 +68,7 @@ logInForm.addEventListener('submit', async event => {
             throw new Error('Enter a valid password!');
         }
 
-        const response = await fetch('http://localhost:8080/login', {
+        const response = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

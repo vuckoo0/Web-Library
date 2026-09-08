@@ -17,9 +17,9 @@ func main() {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://127.0.0.1:5500"},
-		AllowMethods: []string{"GET", "POST", "PATCH", "DELETE"},
-		AllowHeaders: []string{"Content-Type", "Authorization"},
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE"},
+		AllowHeaders:    []string{"Content-Type", "Authorization"},
 	}))
 
 	storage.LibraryDB = storage.ConnectDataBase()
