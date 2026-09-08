@@ -2,6 +2,11 @@ const statusDot = document.querySelector('#status-dot');
 const statusDropdownMenuButton = document.querySelector('#status-username-button');
 const statusDropdownMenu = document.querySelector('#status-username-dropdown');
 
+function removeToken() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+}
+
 function getTokenPayload(token) {
     try {
         const base64 = token.split('.')[1]; // JWT has 3 parts: header.payload.signature
@@ -23,9 +28,7 @@ if (token && !isTokenExpired(token)) {
     statusDot.style.backgroundColor = 'green';
     statusDropdownMenuButton.textContent = localStorage.getItem('name');
 } else {
-    // clear stale token
-    localStorage.removeItem('token');
-    localStorage.removeItem('name');
+    removeToken();
     statusDot.style.backgroundColor = 'red';
     statusDropdownMenuButton.textContent = 'Not logged in';
 }
@@ -39,4 +42,9 @@ document.addEventListener('click', (event) => {
     if (!document.querySelector('#status-username').contains(event.target)) {
         statusDropdownMenu.style.display = 'none';
     }
+});
+
+document.querySelector('#log-out-button').addEventListener('click', () => {
+    removeToken();
+    window.location.reload();
 });

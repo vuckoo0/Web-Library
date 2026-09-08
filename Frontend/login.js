@@ -38,7 +38,7 @@ signUpForm.addEventListener('submit', async event => {
         }
 
         alert('Sign Up succsessful')
-        signUpForm.reset();
+        window.location.reload();
         
     } catch (error) {
         alert(`An error ocured!: ${error}`)
@@ -81,6 +81,7 @@ logInForm.addEventListener('submit', async event => {
         const data = await response.json();
         localStorage.setItem('token', data.token);
         localStorage.setItem('name', data.name);
+        window.location.reload();
 
     } catch (error) {
         alert(`An error ocured!: ${error}`);
