@@ -10,12 +10,12 @@ import (
 )
 
 func AuthenticationMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		authHeader := c.GetHeader("Authorization")
+	return func(ctx *gin.Context) {
+		authHeader := ctx.GetHeader("Authorization")
 		if authHeader == "" {
-			log.Println(authHeader)
-			c.JSON(401, gin.H{"error": "missing authorization header"})
-			c.Abort()
+			log.Println("missing authorization header")
+			ctx.JSON(401, gin.H{"error": "missing authorization header"})
+			ctx.Abort()
 			return
 		}
 
@@ -27,32 +27,32 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 
 		if err != nil {
 			log.Println(err)
-			c.JSON(401, gin.H{"error": "invalid or expired token"})
-			c.Abort()
+			ctx.JSON(401, gin.H{"error": "invalid or expired token"})
+			ctx.Abort()
 			return
 		}
 
 		if !token.Valid {
 			log.Println(err)
-			c.JSON(401, gin.H{"error": "invalid token"})
-			c.Abort()
+			ctx.JSON(401, gin.H{"error": "invalid token"})
+			ctx.Abort()
 			return
 		}
 
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok {
 			log.Println(err)
-			c.JSON(401, gin.H{"error": "invalid claims"})
-			c.Abort()
+			ctx.JSON(401, gin.H{"error": "invalid claims"})
+			ctx.Abort()
 			return
 		}
 
 		userId := claims["user_id"]
 		privilege := claims["privilege"]
 
-		c.Set("user_id", userId)
-		c.Set("privilege", privilege)
+		ctx.Set("user_id", userId)
+		ctx.Set("privilege", privilege)
 
-		c.Next()
+		ctx.Next()
 	}
 }
