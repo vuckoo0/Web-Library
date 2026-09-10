@@ -2,6 +2,7 @@ package main
 
 import (
 	api "main/api"
+	logs "main/logs"
 	middleware "main/middleware"
 	storage "main/storage"
 
@@ -21,6 +22,8 @@ func main() {
 		AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE"},
 		AllowHeaders:    []string{"Content-Type", "Authorization"},
 	}))
+
+	logs.SetupErrorLogs()
 
 	storage.LibraryDB = storage.ConnectDataBase()
 	defer storage.LibraryDB.Close()
