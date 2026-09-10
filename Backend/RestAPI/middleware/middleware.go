@@ -13,7 +13,7 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader("Authorization")
 		if authHeader == "" {
-			log.Println(authHeader)
+			log.Println("missing authorization header")
 			ctx.JSON(401, gin.H{"error": "missing authorization header"})
 			ctx.Abort()
 			return
