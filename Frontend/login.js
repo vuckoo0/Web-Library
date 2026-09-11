@@ -81,8 +81,8 @@ logInForm.addEventListener('submit', async event => {
         }
 
         const data = await response.json();
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('name', data.name);
+        sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('name', data.name);
         window.location.reload();
 
     } catch (error) {

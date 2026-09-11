@@ -36,7 +36,7 @@ async function loadBooksWithTitle(book) {
         const response = await fetch(`${API_URL}/books/search?title=${encodeURIComponent(book.title)}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             },
         });
         const booksWithTitle = await response.json();
@@ -55,7 +55,7 @@ async function loadBooksFromDB() {
 
         const response = await fetch(`${API_URL}/books`, {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             },
         });
         const books = await response.json();

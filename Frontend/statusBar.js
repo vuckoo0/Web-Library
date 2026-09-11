@@ -1,10 +1,16 @@
 const statusDot = document.querySelector('#status-dot');
 const statusDropdownMenuButton = document.querySelector('#status-username-button');
 const statusDropdownMenu = document.querySelector('#status-username-dropdown');
+const statusDropdownFirstButton = document.querySelector('#status-username-dropdown ')
 
 function removeToken() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('name');
+    if (sessionStorage.getItem('token')) {
+        sessionStorage.removeItem('token');
+    }
+
+    if (sessionStorage.getItem('name')) {
+        sessionStorage.removeItem('name');
+    }
 }
 
 function getTokenPayload(token) {
@@ -22,11 +28,12 @@ function isTokenExpired(token) {
     return false;
 }
 
-const token = localStorage.getItem('token');
+const token = sessionStorage.getItem('token');
 
 if (token && !isTokenExpired(token)) {
     statusDot.style.backgroundColor = 'green';
-    statusDropdownMenuButton.textContent = localStorage.getItem('name');
+    statusDropdownMenuButton.textContent = sessionStorage.getItem('name');
+
 } else {
     removeToken();
     statusDot.style.backgroundColor = 'red';

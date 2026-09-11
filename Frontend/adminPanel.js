@@ -12,7 +12,7 @@ async function saveBookToDB(book) {
     const response = await fetch(`${API_URL}/books`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(book)
@@ -31,7 +31,7 @@ async function editBookFromDB(newBook) {
     const response = await fetch(`${API_URL}/books?id=${newBook.id}`, {
         method: 'PATCH',
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
