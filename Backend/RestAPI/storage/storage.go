@@ -26,7 +26,7 @@ func ConnectDataBase() *sql.DB {
 		log.Fatal("[RestAPI]: Error in library database pinging", err)
 	}
 
-	log.Print("[RestAPI]: Succsessfully connected to the library")
+	log.Println("[RestAPI]: Succsessfully connected to the library database")
 
 	return db
 }

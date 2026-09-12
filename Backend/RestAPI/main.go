@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	api "main/api"
 	logs "main/logs"
 	middleware "main/middleware"
@@ -24,6 +25,8 @@ func main() {
 	}))
 
 	logs.SetupErrorLogs()
+
+	log.Println("--------- Server started ---------")
 
 	storage.LibraryDB = storage.ConnectDataBase()
 	defer storage.LibraryDB.Close()
