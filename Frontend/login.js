@@ -8,6 +8,7 @@ startMenuButton.addEventListener('click', event => {
     window.location.href = 'index.html';
 });
 
+if (signUpForm) {
 signUpForm.addEventListener('submit', async event => {
 
     event.preventDefault();
@@ -48,7 +49,9 @@ signUpForm.addEventListener('submit', async event => {
         signUpForm.reset();
     }
 });
+}
 
+if (logInForm) {
 logInForm.addEventListener('submit', async event => {
 
     event.preventDefault();
@@ -90,3 +93,4 @@ logInForm.addEventListener('submit', async event => {
         logInForm.reset();
     }
 });
+}

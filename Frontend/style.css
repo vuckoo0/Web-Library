@@ -26,6 +26,7 @@ input:focus, select:focus { border-color: var(--peach); box-shadow: 0 0 0 3px rg
 .book-form, .search-form, .option { border: 1px solid rgba(231,213,193,.95); border-radius: 16px; background: rgba(255,255,255,.86); box-shadow: var(--shadow); }
 .book-form, .search-form { width: min(100%, 440px); margin: 0 auto 24px; padding: 26px; display: flex; flex-direction: column; gap: 13px; align-items: stretch; }
 .book-form h2 { margin: 0 0 6px; font-family: 'Lora', serif; font-size: 1.4rem; text-align: center; }
+.account-switch { margin: 4px 0 0; color: var(--muted-ink); font-size: .88rem; text-align: center; }
 .search-form { width: min(100%, 680px); flex-direction: row; flex-wrap: wrap; align-items: end; justify-content: center; }
 .search-form .form-field { flex: 1 1 290px; }
 .form-field { margin: 0; }

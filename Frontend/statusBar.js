@@ -54,7 +54,7 @@ if (isLoggedIn) {
         window.location.href = 'login.html';
     });
     addDropdownButton('Sign Up', () => {
-        window.location.href = 'login.html#sign-up-form';
+        window.location.href = 'signup.html';
     });
 }
 
