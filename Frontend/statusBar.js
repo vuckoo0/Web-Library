@@ -1,7 +1,6 @@
 const statusDot = document.querySelector('#status-dot');
 const statusDropdownMenuButton = document.querySelector('#status-username-button');
 const statusDropdownMenu = document.querySelector('#status-username-dropdown');
-const statusDropdownFirstButton = document.querySelector('#status-username-dropdown ')
 
 function removeToken() {
     if (sessionStorage.getItem('token')) {
@@ -25,19 +24,38 @@ function getTokenPayload(token) {
 function isTokenExpired(token) {
     const payload = getTokenPayload(token);
     if (!payload) return true;
-    return false;
+    return payload.exp && payload.exp * 1000 <= Date.now();
 }
 
 const token = sessionStorage.getItem('token');
+const isLoggedIn = token && !isTokenExpired(token);
 
-if (token && !isTokenExpired(token)) {
+function addDropdownButton(label, onClick) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = label;
+    button.addEventListener('click', onClick);
+    statusDropdownMenu.appendChild(button);
+}
+
+if (isLoggedIn) {
     statusDot.style.backgroundColor = 'green';
     statusDropdownMenuButton.textContent = sessionStorage.getItem('name');
+    addDropdownButton('Log Out', () => {
+        removeToken();
+        window.location.reload();
+    });
 
 } else {
     removeToken();
     statusDot.style.backgroundColor = 'red';
     statusDropdownMenuButton.textContent = 'Not logged in';
+    addDropdownButton('Log In', () => {
+        window.location.href = 'login.html';
+    });
+    addDropdownButton('Sign Up', () => {
+        window.location.href = 'login.html#sign-up-form';
+    });
 }
 
 statusDropdownMenuButton.addEventListener('click', () => {
@@ -49,9 +67,4 @@ document.addEventListener('click', (event) => {
     if (!document.querySelector('#status-username').contains(event.target)) {
         statusDropdownMenu.style.display = 'none';
     }
-});
-
-document.querySelector('#log-out-button').addEventListener('click', () => {
-    removeToken();
-    window.location.reload();
 });
