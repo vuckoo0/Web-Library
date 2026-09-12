@@ -13,7 +13,7 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader("Authorization")
 		if authHeader == "" {
-			log.Println("missing authorization header")
+			log.Println("Missing authorization header")
 			ctx.JSON(401, gin.H{"error": "missing authorization header"})
 			ctx.Abort()
 			return
@@ -82,12 +82,14 @@ func PrivilegeAuthorization(minPrivilege int) gin.HandlerFunc {
 		privilege := ctx.GetInt("privilege")
 
 		if privilege < 0 {
+			log.Println("[PrivilegeAuthorization] Invalid privilege")
 			ctx.JSON(403, gin.H{"error": "invalid privilege"})
 			ctx.Abort()
 			return
 		}
 
 		if privilege > minPrivilege {
+			log.Println("[PrivilegeAuthorization] Insufficient privilege")
 			ctx.JSON(403, gin.H{"error": "insufficient privilege"})
 			ctx.Abort()
 			return

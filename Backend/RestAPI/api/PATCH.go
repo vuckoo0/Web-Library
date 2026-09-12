@@ -2,7 +2,7 @@ package api
 
 import (
 	"log"
-	"main/storage"
+	storage "main/storage"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +12,7 @@ func HandleBookFieldEdit(c *gin.Context) {
 
 	Id, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
+		log.Println(err)
 		c.JSON(400, gin.H{"error": "Invalid Book Id"})
 		return
 	}
@@ -34,8 +35,8 @@ func HandleBookFieldEdit(c *gin.Context) {
 
 	err = <-errorChanel
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
 		log.Println(err)
+		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 

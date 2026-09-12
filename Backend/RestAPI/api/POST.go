@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 	"log"
-	"main/auth"
+	auth "main/auth"
 	models "main/models"
 	storage "main/storage"
 
@@ -18,6 +18,7 @@ func HandleAddingBook(c *gin.Context) {
 	err := c.ShouldBindJSON(&newBook)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -26,6 +27,7 @@ func HandleAddingBook(c *gin.Context) {
 
 	err = <-errorChanel
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
@@ -39,6 +41,7 @@ func HandleSignUp(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&newUser)
 	if err != nil {
+		log.Println(err)
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -49,6 +52,7 @@ func HandleSignUp(c *gin.Context) {
 	err = <-errorChanel
 	fmt.Println(err)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
@@ -62,6 +66,7 @@ func HandleLogIn(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&loggingUser)
 	if err != nil {
+		log.Println(err)
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
